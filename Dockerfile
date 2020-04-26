@@ -28,7 +28,10 @@ RUN echo "jenkins ALL=(ALL) NOPASSWD: /usr/local/bin/docker" > /etc/sudoers.d/01
 RUN curl --create-dirs -sSLo /usr/share/jenkins/slave.jar http://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/$JENKINS_REMOTING_VERSION/remoting-$JENKINS_REMOTING_VERSION.jar && chmod 755 /usr/share/jenkins && chmod 644 /usr/share/jenkins/slave.jar
 
 COPY entrypoint.sh /usr/local/bin/entrypoint
+RUN chmod +x /usr/local/bin/entrypoint
 VOLUME $JENKINS_HOME
 WORKDIR $JENKINS_HOME
 USER jenkins
 ENTRYPOINT ["/usr/local/bin/entrypoint"]
+USER root
+RUN ["chmod", "+x", "/usr/local/bin/entrypoint"]
