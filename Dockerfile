@@ -1,14 +1,13 @@
-FROM docker:18-dind
-MAINTAINER Piotr Minkowski <piotr.minkowski@gmail.com>
-ENV JENKINS_MASTER http://localhost:8080
+FROM docker:dind
+ENV JENKINS_MASTER http://192.168.8.104:38080/
 ENV JENKINS_SLAVE_NAME dind-node
 ENV JENKINS_SLAVE_SECRET ""
 ENV JENKINS_HOME /home/jenkins
-ENV JENKINS_REMOTING_VERSION 3.17
+ENV JENKINS_REMOTING_VERSION 4.3
 ENV DOCKER_HOST tcp://0.0.0.0:2375
 RUN apk --update add curl tar git bash openjdk8 sudo
 
-ARG MAVEN_VERSION=3.5.2
+ARG MAVEN_VERSION=3.6.3
 ARG USER_HOME_DIR="/root"
 ARG SHA=707b1f6e390a65bde4af4cdaf2a24d45fc19a6ded00fff02e91626e3e42ceaff
 ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
@@ -31,5 +30,5 @@ RUN curl --create-dirs -sSLo /usr/share/jenkins/slave.jar http://repo.jenkins-ci
 COPY entrypoint.sh /usr/local/bin/entrypoint
 VOLUME $JENKINS_HOME
 WORKDIR $JENKINS_HOME
-USER jenkins 
+USER jenkins
 ENTRYPOINT ["/usr/local/bin/entrypoint"]
